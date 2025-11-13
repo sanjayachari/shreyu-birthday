@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import confetti from "canvas-confetti"
 
 export default function BirthdayHero() {
   const [animate, setAnimate] = useState(false)
@@ -30,14 +31,35 @@ export default function BirthdayHero() {
     }
   }, [])
 
+  // 🎉 Celebration effect function
+  const triggerCelebration = () => {
+    const duration = 2 * 1000
+    const end = Date.now() + duration
+
+    const frame = () => {
+      confetti({
+        particleCount: 4,
+        startVelocity: 30,
+        spread: 360,
+        ticks: 60,
+        origin: {
+          x: Math.random(),
+          y: Math.random() - 0.2
+        },
+      })
+      if (Date.now() < end) {
+        requestAnimationFrame(frame)
+      }
+    }
+
+    frame()
+  }
+
   return (
     <div className="text-center px-4 py-8">
-      {/* Birthday Message */}
       <div className="space-y-4 sm:space-y-6">
         {/* Animated Emoji */}
-        <div className="text-6xl sm:text-8xl animate-bounce" style={{ animationDelay: "0s" }}>
-          🎉
-        </div>
+        <div className="text-6xl sm:text-8xl animate-bounce">🎉</div>
 
         {/* Main Title */}
         <div className="space-y-2 sm:space-y-4">
@@ -48,7 +70,6 @@ export default function BirthdayHero() {
             )}
           </h1>
 
-          {/* Name with gradient text */}
           <h2
             className={`text-3xl sm:text-5xl lg:text-7xl font-black transition-all duration-1000 transform ${
               animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -80,7 +101,6 @@ export default function BirthdayHero() {
           </div>
         )}
 
-        {/* Subtitle */}
         <p
           className={`text-lg sm:text-2xl lg:text-3xl text-white/90 font-medium drop-shadow-lg transition-all duration-1000 delay-300 transform ${
             animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
@@ -89,21 +109,27 @@ export default function BirthdayHero() {
           Another year of magic and moments! 🌟
         </p>
 
-        {/* CTA Buttons */}
+        {/* 🎊 Celebration Buttons */}
         <div
           className={`flex flex-col sm:flex-row gap-4 justify-center mt-8 sm:mt-12 transition-all duration-1000 delay-500 transform ${
             animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <button className="px-8 py-4 sm:px-10 sm:py-5 bg-white text-purple-600 font-bold text-lg rounded-full hover:scale-110 hover:shadow-2xl transition-all duration-300 active:scale-95">
+          <button
+            onClick={triggerCelebration}
+            className="px-8 py-4 sm:px-10 sm:py-5 bg-white text-purple-600 font-bold text-lg rounded-full hover:scale-110 hover:shadow-2xl transition-all duration-300 active:scale-95"
+          >
             Celebrate 🎊
           </button>
-          <button className="px-8 py-4 sm:px-10 sm:py-5 bg-white/20 backdrop-blur-md text-white font-bold text-lg rounded-full border-2 border-white hover:bg-white/30 hover:scale-110 transition-all duration-300 active:scale-95">
+
+          <button
+            onClick={triggerCelebration}
+            className="px-8 py-4 sm:px-10 sm:py-5 bg-white/20 backdrop-blur-md text-white font-bold text-lg rounded-full border-2 border-white hover:bg-white/30 hover:scale-110 transition-all duration-300 active:scale-95"
+          >
             Share Joy 💝
           </button>
         </div>
 
-        {/* Decorative Elements */}
         <div
           className={`mt-12 sm:mt-16 flex justify-center gap-4 text-4xl sm:text-5xl animate-pulse transition-all duration-1000 delay-700 ${
             animate ? "opacity-100" : "opacity-0"
